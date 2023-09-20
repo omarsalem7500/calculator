@@ -16,10 +16,9 @@ window.addEventListener('keydown', handleKeyboardInput)
 
 function handleKeyboardInput(e) {
     if (e.key >= 0 && e.key <= 9){
-        let value = e.key; 
-         value.innerText = e.key; 
+        
 
-        appendNumber(value);
+        appendNumber(e.key);
     }
     if (e.key === '.') addDecimal()
     if (e.key === '=' || e.key === 'Enter') equalsOp()
@@ -73,7 +72,7 @@ function addOperation(button){
     else{
         screen.innerText +=  button;
     }
-     if(opString){
+    if(opString){
         numA = operate(opString, numA, numB);
         numA = numA.toString();
         if(numA === 'Oops'){
@@ -92,7 +91,7 @@ function addOperation(button){
         }
         //opString = button.innerText;
      }
-     else{
+    else{
         if(button.innerText){
             opString =  button.innerText;
         }
@@ -106,9 +105,11 @@ function addOperation(button){
 function equalsOp(){
       
    let final = operate(opString, numA, numB);
+   //numA = final; 
    final = final.toFixed(4);
    final = parseFloat(final);
    screen.innerText = final.toString(); 
+   
    
 } 
 
@@ -134,7 +135,7 @@ function appendNumber(button){
     }
     else{
        
-        if(button.innerText){
+            if(button.innerText){
             numB +=  button.innerText;
             }
             else{
