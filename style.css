@@ -8,6 +8,7 @@
     font-family: 'Roboto', sans-serif;
     line-height: 1.6;
     font-size: 40px;
+    background-image: url( "./images/goat.jpg" );
 }
 
 .calculator{
@@ -24,6 +25,8 @@
     padding-bottom: 20px;
     border: 1px solid black;
     border-radius: 15px;
+    
+    
 }
 
 
@@ -77,11 +80,15 @@ button{
     word-wrap: break-word;
     word-break: break-all;
     
+    
 }
 
 button:hover {
     background-color: #1d2d44;
     transition: all 0.2s;
     filter: brightness(60%);
+   
 }
+
+
 
