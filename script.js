@@ -118,10 +118,11 @@ function equalsOp(){
             
         if (typeof final === "number") {
             final = final.toFixed(4);
+            final = parseFloat(final);
         }
     
         screen.innerText = final.toString();
-    
+        
    
    
 } 
