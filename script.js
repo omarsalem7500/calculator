@@ -44,20 +44,26 @@ function handleKeyboardInput(e) {
     final = "";
 }
 
-function addDecimal(){
-    if(numA && numB && opString && final){
-        clear();
-    }
-    console.log(typeof(numA));
-    if(!numA.includes(".") && numB === ""){
+function addDecimal() {
+    // if (numA && numB && opString && final) {
+    //     clear();
+    // }
+
+    // Check if numA and numB are strings before using `includes` on them
+    if (typeof numA === "string" && !numA.includes(".") && numB === "") {
         screen.innerText += decimal.innerText;
         numA += decimal.innerText;
     }
-    if(!numB.includes(".") &&  screen.innerText.includes("+" ||"✕" || "—" ||"÷" )){
+    
+    const operations = ["+", "✕", "—", "÷"];
+    if (typeof numB === "string" && !numB.includes(".") && operations.some(op => screen.innerText.includes(op))) {
         screen.innerText += decimal.innerText;
         numB += decimal.innerText;
     }
 }
+    
+
+
 function delete_char(){
     screen.innerText = screen.innerText.slice(0, -1);
 
@@ -69,60 +75,62 @@ function delete_char(){
     }
 }
 
-function addOperation(button){
-     // stringA = number(screen.innerText);
-    if(button.innerText){
-        screen.innerText +=  button.innerText;
+function addOperation(button) {
+    // Checking the type and properties of the button
+    if (button && typeof button.innerText === "string") {
+        screen.innerText += button.innerText;
+    } else if (typeof button === "string") {
+        screen.innerText += button;
+    } else {
+        console.error("Unexpected input to addOperation:", button);
+        return;  // Exit the function early
     }
-    else{
-        screen.innerText +=  button;
-    }
-    if(opString){
-        numA = operate(opString, numA, numB);
-        numA = numA.toString();
-        if(numA === 'Oops'){
+
+    if (opString) {
+        let result = operate(opString, numA, numB);
+
+        // Check result before assigning to numA
+        if (typeof result !== "undefined") {
+            numA = result.toString();
+        } else {
+            console.error("Operation result is undefined:", opString, numA, numB);
+            clear();
+            return; // Exit the function early
+        }
+
+        if (numA === 'Oops') {
             alert("Oops");
-            screen.innerText = '';
-            numA = '';
-            numB = '';
-            opString = "";;
+            clear();
+            return; // Exit the function early
         }
+
         numB = '';
-        if(button.innerText){
-            opString =  button.innerText;
-        }
-        else{
-            opString =  button;
-        }
-        //opString = button.innerText;
-     }
-    else{
-        if(button.innerText){
-            opString =  button.innerText;
-        }
-        else{
-            opString =  button;
-        }
+        opString = typeof button.innerText === "string" ? button.innerText : button;
+
+    } else {
+        opString = typeof button.innerText === "string" ? button.innerText : button;
     }
-    
 }
 
 function equalsOp(){
-      
-     final = operate(opString, numA, numB);
-    //final = final.toString();
-   final = final.toFixed(4);
-   final = parseFloat(final);
-   screen.innerText = final.toString(); 
+    
+        final = operate(opString, numA, numB);
+            
+        if (typeof final === "number") {
+            final = final.toFixed(4);
+        }
+    
+        screen.innerText = final.toString();
+    
    
    
 } 
 
 function appendNumber(button){
     
-    if(numA && numB && opString && final){
-        clear();
-    }
+    // if(numA && numB && opString && final){
+    //     clear();
+    // }
     if(button.innerText){
         screen.innerText +=  button.innerText;
     }
@@ -227,23 +235,24 @@ function divide(a, b){
 
 function operate(operator, a , b){
     
-    //numB = '';
-    a = Number(a);
-    b = Number(b);
-    if(operator === '+'){
-        return add(a, b);
+        a = Number(a);
+        b = Number(b);
+        
+        switch(operator) {
+            case '+':
+                return add(a, b);
+            case '—':
+                return subtract(a, b);
+            case '✕':
+                return multiply(a, b);
+            case '÷':
+                if(b === 0) {
+                    return 'Oops';
+                }
+                return divide(a, b);
+            default:
+                console.error("Unknown operator:", operator);  // Log for debugging
+                return 0;  // Default return value if no match found
+        
     }
-    else if(operator === '—'){
-        return subtract(a,b);
-    }
-    else if(operator === '✕'){
-        return multiply(a,b)
-    }
-    else if(operator === '÷') {
-        return divide(a,b);
-    }
-    else{
-        return;
-    }
-    
 }
