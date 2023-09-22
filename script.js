@@ -129,9 +129,9 @@ function equalsOp(){
 
 function appendNumber(button){
     
-    if(numA && numB && opString && final){
-        clear();
-    }
+    // if(numA && numB && opString && final){
+    //     clear();
+    // }
     if(button.innerText){
         screen.innerText +=  button.innerText;
     }
